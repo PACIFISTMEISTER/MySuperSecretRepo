@@ -1,11 +1,10 @@
 from flask import Flask, render_template
 from flask_cors import CORS
-from sqlalchemy.orm import sessionmaker
-import bcrypt
+
 
 from Cart import cart_path
 from Chineese import chinese_food
-from InsertData import ins, AddAdmin
+
 from Italian import italian_food
 from admin import admin_page
 from booking import booking_page
