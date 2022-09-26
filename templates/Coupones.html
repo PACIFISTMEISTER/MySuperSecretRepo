@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="shortcut icon" href="themes/assets/ico/favicon.ico">
+    <title>Bootstrappage.com free templates</title>
+
+
+    <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
+
+ <script src="{{ url_for('static', filename='js/ie8-responsive-file-warning.js') }}"></script>
+
+
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+
+    <link href="{{ url_for('static', filename='css/carousel.css') }}" rel="stylesheet">
+  </head>
+
+  <body>
+    <div class="navbar-wrapper">
+      <div class="container">
+
+        <div class="navbar navbar-inverse navbar-static-top" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+            </div>
+            <div class="navbar-collapse collapse">
+              <ul class="nav navbar-nav">
+                <li><a href="/Admin">Товар</a></li>
+                <li><a href="/Admin/Coupones">Купоны</a></li>
+                  <li><a href="/" onclick="LogOut()">Выйти</a></li>
+
+
+
+
+              </ul>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+
+
+    <h2 class="itemsTitle">Весь ассортимент</h2>
+    	  {% with messages = get_flashed_messages() %}
+  				{% if messages %}
+
+						{% for message in messages %}
+<div class="alert alert-warning">
+	<strong>{{message}}</strong></div>
+    					{% endfor %}
+
+  				{% endif %}
+			  {% endwith %}
+
+
+    <table class="table" style="font-size:24">
+  <thead>
+    <tr>
+      <th scope="col">id купона</th>
+      <th scope="col">скидка</th>
+        <th scope="col">Тег</th>
+</tr>
+  </thead>
+  <tbody>
+  {%for dat in AllCoupones%}
+    <tr>
+
+      <th scope="row">{{dat.Id}}</th>
+        <th scope="row">{{dat.DiscountPercent}}</th>
+        <th scope="row">{{dat.Number}}</th>
+
+
+      <td><button type="button"  class="btn btn-md" data-toggle="modal" data-target="#exampleModal{{dat.Id}}">Изменить</button></td>
+
+      	<!-- Modal1 -->
+<div class="modal fade" id="exampleModal{{dat.Id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Изменение данных</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+		  <form method="post" enctype="application/x-www-form-urlencoded">
+              <div class="form-group">
+
+    				<input type="hidden" required class="form-control" id="{{dat.Id}}" name="IdInput" Value="{{dat.Id}}">
+				</div>
+
+
+
+			  <div class="form-group">
+    				<label for="Percent{{dat.Id}}">Процент скидки</label>
+    				<input maxlength="8" required  type="number" name="PriceInput" class="form-control" id="Percent{{dat.Id}}" value="{{dat.DiscountPercent}}">
+			  </div>
+              			  <div class="form-group">
+    				<label for="NewNumber{{dat.Id}}">Тег</label>
+    				<input maxlength="8" required  type="number" name="NewNumber" class="form-control" id="NewNumber{{dat.Id}}" placeholder="Введите тег">
+			  </div>
+
+
+			  <button type="submit"  name="ChangeData" class="btn btn-primary"> Изменить данные </button>
+                <button type="button" class="btn btn-primary" onclick="DeleteRequest({{dat.Id}})"> Удалить купон </button>
+
+		  </form>
+
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal"> Скрыть форму </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+    </tr>
+  {%endfor%}
+  </tbody>
+</table>
+
+<h1 style="position:right;  display:flex; justify-content:flex-end;margin-right:5%"><button  type="button" class="btn btn-success btn-lg"  data-toggle="modal" data-target="#addModal">Добавить</button></h1>
+
+
+
+
+<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" >Добавление купона</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+		  <form method="post" enctype="application/x-www-form-urlencoded">
+
+
+
+			  <div class="form-group">
+    				<label for="NewPrice">Процент</label>
+    				<input maxlength="8" required  type="number" name="NewPrice" class="form-control" id="NewPrice" placeholder="Введите процент">
+			  </div>
+
+              			  <div class="form-group">
+    				<label for="NewNumber">Тег</label>
+    				<input maxlength="8" required  type="number" name="NewNumber" class="form-control" id="NewNumber" placeholder="Введите тег">
+			  </div>
+
+
+
+			  <button type="submit"  name="newData" class="btn btn-primary"> добавить </button>
+
+		  </form>
+
+
+      </div>
+      <div class="modal-footer">
+
+        <button type="button" class="btn btn-primary" data-dismiss="modal"> Скрыть форму </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+    <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+    <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/holder.js') }}"></script>
+
+   <script>
+
+      function DeleteRequest(id)
+      {
+
+          const req = new XMLHttpRequest();
+          const url = 'http://localhost:8080/Admin/DeleteCoupone/'+id
+          req.open("DELETE", url);
+          req.withCredentials = true;
+          req.send();
+          setTimeout(function(){
+		location.reload();
+	}, 700);
+      }
+
+  </script>
+  </body>
+</html>

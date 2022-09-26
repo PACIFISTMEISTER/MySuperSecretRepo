@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="shortcut icon" href="#">
+    <title>MySuperShoppyShop</title>
+
+    <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
+<script src="{{ url_for('static', filename='js/ie8-responsive-file-warning.js') }}"></script>
+
+
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+
+    <link href="{{ url_for('static', filename='css/carousel.css') }}" rel="stylesheet">
+  </head>
+
+  <body>
+    <div class="navbar-wrapper">
+      <div class="container">
+
+        <div class="navbar navbar-inverse navbar-static-top" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+            </div>
+            <div class="navbar-collapse collapse">
+              <ul class="nav navbar-nav">
+                <li><a href="/">На главную</a></li>
+
+
+
+
+
+              </ul>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+
+
+    <h2 class="itemsTitle">Регистарция</h2>
+
+<form method="post">
+    <div class="container">
+         <div class="row justify-content-md-center">
+  <div class="col col-lg-5">
+    <label for="loginInput" class="form-label">Логин</label>
+    <input type="email" required class="form-control" id="loginInput" name="loginInput" aria-describedby="emailHelp" placeholder="myemail@mail.ru">
+  </div>
+</div>
+                 <div class="row justify-content-md-center">
+  <div class="col col-lg-5">
+    <label for="passwordInput" class="form-label">Пароль</label>
+    <input type="password" required class="form-control" id="passwordInput" aria-describedby="emailHelp" name="passwordInput">
+  </div>
+</div>
+        <br>
+        <button type="submit" class="btn btn-light" name="loginData">Войти</button>
+    </div>
+
+</form>
+
+    <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+    <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/holder.js') }}"></script>
+
+   <script>
+
+      function DeleteRequest(id)
+      {
+
+          const req = new XMLHttpRequest();
+          const url = 'http://localhost:8080/Admin/Delete/'+id
+          req.open("DELETE", url);
+          req.withCredentials = true;
+          req.send();
+          setTimeout(function(){
+		location.reload();
+	}, 700);
+      }
+
+
+
+            function LogOut()
+      {
+
+          const req = new XMLHttpRequest();
+          const url = 'http://localhost:8080/Login/LogOut'
+          req.open("GET", url);
+          req.withCredentials = true;
+          req.send();
+      }
+  </script>
+  </body>
+</html>

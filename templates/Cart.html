@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="shortcut icon" href="themes/assets/ico/favicon.ico">
+    <title>Bootstrappage.com free templates</title>
+
+
+    <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
+
+<script src="{{ url_for('static', filename='js/ie8-responsive-file-warning.js') }}"></script>
+
+
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+
+    <link href="{{ url_for('static', filename='css/carousel.css') }}" rel="stylesheet">
+  </head>
+
+  <body>
+    <div class="navbar-wrapper">
+      <div class="container">
+
+        <div class="navbar navbar-inverse navbar-static-top" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a class="navbar-brand" href="/Cart">Корзина</a>
+            </div>
+            <div class="navbar-collapse collapse">
+              <ul class="nav navbar-nav">
+                <li><a href="/">Главная страница</a></li>
+                <li><a href="/menu">Меню</a></li>
+                <li><a href="/Booking">Бронирование</a></li>
+	<li class="dropdown">
+                  <a href="/italian" class="dropdown-toggle" data-toggle="dropdown">Итальянская Еда <b class="caret"></b></a>
+                  <ul class="dropdown-menu">
+                    <li><a href="/italian/Drinks">Напитки</a></li>
+                    <li><a href="/italian/Meat">Мясо</a></li>
+                    <li><a href="/italian/Veg">Вегетерианские блюда</a></li>
+                    <li><a href="/italian/Fish">Рыба</a></li>
+                  </ul>
+                </li>
+
+				<li class="dropdown">
+                  <a href="/Chinese" class="dropdown-toggle" data-toggle="dropdown">Китайская Еда <b class="caret"></b></a>
+                  <ul class="dropdown-menu">
+                    <li><a href="/Chinese/Drinks">Напитки</a></li>
+                    <li><a href="/Chinese/Meat">Мясо</a></li>
+                    <li><a href="/Chinese/Veg">Вегетерианские блюда</a></li>
+                    <li><a href="/Chinese/Fish">Рыба</a></li>
+                  </ul>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+
+
+    <div id="mainCarousel">
+    <div id="myCarousel" class="carousel slide" data-ride="carousel">
+
+      <div class="carousel-inner">
+        <div class="item active">
+          <script
+			src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDtAXU--aC07Resp2uaigqxU4osF5B-fv8&sensor=false">
+			</script>
+			<script>
+			var myCenter=new google.maps.LatLng(57.974961, 56.210372);
+			var marker;
+			function initialize()
+			{
+			var mapProp = {
+			  center:myCenter,
+			  zoom:15,
+			  mapTypeId:google.maps.MapTypeId.ROADMAP
+			  };
+			var map=new google.maps.Map(document.getElementById("googleMap"),mapProp);
+			marker=new google.maps.Marker({
+			  position:myCenter,
+			 // icon:'themes/assets/images/nepali-momo.png',
+			  animation:google.maps.Animation.BOUNCE
+			  });
+
+			marker.setMap(map);
+
+			// Info open
+			var infowindow = new google.maps.InfoWindow({
+			  content:"thats me!"
+			  });
+
+			google.maps.event.addListener(marker, 'click', function() {
+			  infowindow.open(map,marker);
+			  });
+			}
+			google.maps.event.addDomListener(window, 'load', initialize);
+			</script>
+			<div id="googleMap" style="height:450px;"></div>
+			  <div class="container">
+				<div class="carousel-caption">
+				  <a class="btn btn-lg btn-default" href="/Cart" role="button" style="font-size:2em">Order Online Now &raquo;</a>
+				</div>
+			  </div>
+			</div>
+		  </div>
+		</div>
+	</div>
+<div>
+    <h2 class="itemsTitle">Ваш заказ</h2>
+
+    <table class="table" style="font-size:24">
+  <thead>
+    <tr>
+      <th scope="col">Название</th>
+      <th scope="col">Фото</th>
+      <th scope="col">Состав</th>
+      <th scope="col">Тип</th>
+        <th scope="col">Цена</th>
+        <th scope="col">Убрать</th>
+    </tr>
+  </thead>
+  <tbody>
+  {%for dat in CartData%}
+    <tr>
+
+      <th scope="row">{{dat.Name}}</th>
+      <td><img src="{{url_for('static',filename='images/'+dat.Picture)}}" width="150px" height="120px"></td>
+      <td>{{dat.Composition}}</td>
+      <td>{{dat.FoodType}}</td>
+      <td>
+            {%if dat.discount %}
+          <p>
+ &pound;{{dat.discount.NewPrice}}
+           {%else%}
+           &pound;{{dat.Price}}
+           {%endif%}
+
+      </td>
+
+      <td><button type="button" onclick="SendHttpRequest({{dat.Id}})" class="btn btn-md">Удалить</button></td>
+    </tr>
+  {%endfor%}
+  </tbody>
+</table>
+<h1 style="position:right;  display:flex; justify-content:flex-end;margin-right:5%"><button  type="button" class="btn btn-success btn-lg"  data-toggle="modal" data-target="#exampleModal">{{Payment}} Оплата</button></h1>
+
+
+
+
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Бронь на 2 человека</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+		  <form method="post" enctype="application/x-www-form-urlencoded">
+			    <div class="form-group">
+    				<label  for="EmailInput">Адрес почты</label>
+    				<input required type="email" class="form-control" id="EmailInput" name="EmailInput" placeholder="myMail@example.com">
+				</div>
+
+			  <div class="form-group">
+    				<label for="Coupone">Купон</label>
+    				<input maxlength="8"  type="number" name="Coupone" class="form-control" id="Coupone" placeholder="0000/Это на чикен">
+			  </div>
+
+			  			    <div class="form-group">
+    				<label for="SelectType">Тип доставки</label>
+   						 <select class="form-control" id="SelectType" name="SelectType">
+							 <option>Самовывоз</option>
+							 <option>Доставка(от 500)</option>
+							 <option>К брони</option>
+
+    					 </select>
+  				</div>
+
+
+			  <button type="submit"  name="Payment" class="btn btn-primary"> Оплата </button>
+
+		  </form>
+
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal"> Скрыть форму </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+  </div>
+      <footer>
+		<div class="container">
+        <p class="pull-right"><a href="#">Back to top</a></p>
+        <p>&copy; 2014 Company, Inc. &middot; <a href="#">Privacy</a> &middot; <a href="#">Terms</a></p>
+		</div>
+      </footer>
+
+
+
+
+    <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+    <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/holder.js') }}"></script>
+  <script>
+
+      function SendHttpRequest(id)
+      {
+
+          const req = new XMLHttpRequest();
+          const url = 'http://localhost:8080/Cart/DeleteFromToCard/'+id
+          req.open("PUT", url);
+          req.withCredentials = true;
+          req.send();
+          	setTimeout(function(){
+		location.reload();
+	}, 600);
+      }
+
+
+  </script>
+  </body>
+</html>

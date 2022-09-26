@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="shortcut icon" href="#">
+    <title>MySuperShoppyShop</title>
+
+    <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
+<script src="{{ url_for('static', filename='js/ie8-responsive-file-warning.js') }}"></script>
+
+
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+
+    <link href="{{ url_for('static', filename='css/carousel.css') }}" rel="stylesheet">
+  </head>
+
+  <body>
+    <div class="navbar-wrapper">
+      <div class="container">
+
+        <div class="navbar navbar-inverse navbar-static-top" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+            </div>
+            <div class="navbar-collapse collapse">
+              <ul class="nav navbar-nav">
+                <li><a href="/Admin">Товар</a></li>
+                <li><a href="/Admin/Coupones">Купоны</a></li>
+                  <li><a href="/" onclick="LogOut()">Выйти</a></li>
+
+
+
+              </ul>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+
+
+    <h2 class="itemsTitle">Весь ассортимент</h2>
+    	  {% with messages = get_flashed_messages() %}
+  				{% if messages %}
+
+						{% for message in messages %}
+<div class="alert alert-warning">
+	<strong>{{message}}</strong></div>
+    					{% endfor %}
+
+  				{% endif %}
+			  {% endwith %}
+
+
+    <table class="table" style="font-size:24">
+  <thead>
+    <tr>
+      <th scope="col">Название</th>
+      <th scope="col">Фото</th>
+      <th scope="col">Состав</th>
+      <th scope="col">Тип</th>
+      <th scope="col">Цена</th>
+      <th scope="col">Цена со скидкой</th>
+        <th scope="col">Подробней</th>
+    </tr>
+  </thead>
+  <tbody>
+  {%for dat in allData%}
+    <tr>
+
+      <th scope="row">{{dat.Name}}</th>
+      <td><img src="{{url_for('static',filename='images/'+dat.Picture)}}" width="150px" height="120px"></td>
+      <td>{{dat.Composition}}</td>
+      <td>{{dat.FoodType}}</td>
+      <td>{{dat.Price}}  </td>
+      <td>
+            {%if dat.discount %}
+          <p>
+ {{dat.discount.NewPrice}}
+           {%else%}
+           {{dat.Price}}
+           {%endif%}
+
+      </td>
+
+      <td><button type="button"  class="btn btn-md" data-toggle="modal" data-target="#exampleModal{{dat.Id}}">Изменить</button></td>
+
+
+<div class="modal fade" id="exampleModal{{dat.Id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Изменение данных</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+		  <form method="post" enctype="multipart/form-data">
+              <div class="form-group">
+
+    				<input type="hidden" required class="form-control" id="{{dat.Id}}" name="IdInput" Value="{{dat.Id}}">
+				</div>
+
+			    <div class="form-group">
+    				<label  for="EmailInput{{dat.Id}}">Название</label>
+    				<input required class="form-control" id="EmailInput{{dat.Id}}" name="NameInput" Value="{{dat.Name}}">
+				</div>
+
+			  <div class="form-group">
+    				<label for="PriceInput{{dat.Id}}">Цена</label>
+    				<input maxlength="8" required  type="number" name="PriceInput" class="form-control" id="PriceInput{{dat.Id}}" value="{{dat.Price}}">
+			  </div>
+            <div class="form-group">
+  <label for="formFile" class="form-label">Картинка</label>
+  <input class="form-control" type="file" id="formFile" name="formFile"  accept="image/png">
+            </div>
+
+			  			    <div class="form-group">
+    				<label for="SelectType{{dat.Id}}">Тип </label>
+   						 <select  class="form-control" id="SelectType{{dat.Id}}" name="SelectType">
+                           {%if dat.Type=="Breakfast"%}
+                            <option selected>Breakfast</option>
+                           {%else%}
+                           <option>Breakfast</option>
+                           {%endif%}
+							                           {%if dat.Type=="Lunch"%}
+                            <option selected>Lunch</option>
+                           {%else%}
+                           <option>Lunch</option>
+                           {%endif%}
+                           {%if dat.Type=="Dinner"%}
+                            <option selected>Dinner</option>
+                           {%else%}
+                           <option>Dinner</option>
+                           {%endif%}
+
+    					 </select>
+  				</div>
+
+
+
+             <div class="form-group">
+    				<label for="SelectFoodType{{dat.Id}}">Тип </label>
+   						 <select class="form-control" id="SelectFoodType{{dat.Id}}" name="SelectFoodType">
+                           {%if dat.FoodType=="Meat"%}
+                            <option selected>Meat</option>
+                           {%else%}
+                           <option>Meat</option>
+                           {%endif%}
+                           {%if dat.FoodType=="Fish"%}
+                            <option selected>Fish</option>
+                           {%else%}
+                           <option>Fish</option>
+                           {%endif%}
+                           {%if dat.FoodType=="Drink"%}
+                            <option selected>Drink</option>
+                           {%else%}
+                           <option>Drink</option>
+                           {%endif%}
+
+    					 </select>
+  				</div>
+
+
+
+                         <div class="form-group">
+    				<label for="NationType{{dat.Id}}">Тип </label>
+   						 <select class="form-control" id="NationType{{dat.Id}}" name="NationType">
+                           {%if dat.Nation=="Italian"%}
+                            <option selected>Italian</option>
+                           {%else%}
+                           <option>Italian</option>
+                           {%endif%}
+                           {%if dat.Nation=="Chinese"%}
+                            <option selected>Chinese</option>
+                           {%else%}
+                           <option>Chinese</option>
+                           {%endif%}
+
+    					 </select>
+  				</div>
+
+
+            <div class="form-group">
+    				<label  for="DescriptionInput{{dat.Id}}">Описание</label>
+    				<input required class="form-control" id="DescriptionInput{{dat.Id}}" name="DescriptionInput" Value="{{dat.Description}}">
+				</div>
+
+            <div class="form-group">
+    				<label  for="CompositionInput{{dat.Id}}">Состав</label>
+    				<input required class="form-control" id="CompositionInput{{dat.Id}}" name="CompositionInput" Value="{{dat.Composition}}">
+				</div>
+
+
+
+    			<div class="form-check">
+                    {% if dat.IsFromCheif==True%}
+    <input class="form-check-input" type="checkbox" checked name="FromChief" id="FromChief{{dat.Id}}">
+
+                    {%else%}
+                    <input class="form-check-input" type="checkbox"  name="FromChief" id="FromChief{{dat.Id}}">
+                    {%endif%}
+    <label class="form-check-label" for="FromChief{{dat.Id}}">
+    От шэфа
+  </label>
+</div>
+
+
+                  			<div class="form-check">
+                    {% if dat.IsOnMain==True%}
+    <input class="form-check-input" type="checkbox" checked name="OnMain" id="OnMain{{dat.Id}}">
+
+                    {%else%}
+                    <input class="form-check-input" type="checkbox"  name="OnMain" id="OnMain{{dat.Id}}">
+                    {%endif%}
+    <label class="form-check-label" for="OnMain{{dat.Id}}">
+    На главной
+  </label>
+</div>
+              <label for="Discount{{dat.Id}}">Скидка до:</label>
+              {%if dat.discount %}
+<input type="datetime-local" max='2023-01-01'  id="Discount{{dat.Id}}" name="Discount" value="{{dat.discount.Duration}}" min="{{Today}}">
+               <div class="form-group">
+    				<label for="NewPrice{{dat.Id}}">Цена со скидкой</label>
+    				<input maxlength="8"   type="number" name="NewPrice" class="form-control" id="NewPrice{{dat.Id}}" value="{{dat.discount.NewPrice}}">
+                   <input class="form-check-input" type="checkbox"  name="DeleteDiscount" id="DeleteDiscount{{dat.Id}}">
+                   <label class="form-check-label" for="DeleteDiscount{{dat.Id}}">
+                        Удалить скидку
+                    </label>
+			  </div>
+              {%else%}
+              <input type="datetime-local" id="Discount{{dat.Id}}" name="Discount">
+              <div class="form-group">
+    				<label for="NewPrice{{dat.Id}}">Цена со скидкой</label>
+    				<input maxlength="8"   type="number" name="NewPrice" class="form-control" id="NewPrice{{dat.Id}}">
+			  </div>
+              {%endif%}
+
+
+			  <button type="submit"  name="ChangeData" class="btn btn-primary"> Изменить данные </button>
+                <button type="button" class="btn btn-primary" onclick="DeleteRequest({{dat.Id}})"> Удалить товар </button>
+
+		  </form>
+
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal"> Скрыть форму </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+    </tr>
+  {%endfor%}
+  </tbody>
+</table>
+
+<h1 style="position:right;  display:flex; justify-content:flex-end;margin-right:5%"><button  type="button" class="btn btn-success btn-lg"  data-toggle="modal" data-target="#addModal">Добавить</button></h1>
+
+
+
+     	<!-- Modal1 -->
+<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" >Изменение данных</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+		  <form method="post" enctype="multipart/form-data">
+
+
+			    <div class="form-group">
+    				<label  for="NewName">Название</label>
+    				<input required class="form-control" id="NewName" name="NewName" placeholder="Введите название">
+				</div>
+
+			  <div class="form-group">
+    				<label for="NewPrice">Цена</label>
+    				<input maxlength="8" required  type="number" name="NewPrice" class="form-control" id="NewPrice" placeholder="Введите цену">
+			  </div>
+            <div class="form-group">
+  <label for="newFile" class="form-label">Картинка(только png)</label>
+  <input class="form-control" required type="file" id="newFile" name="NewFile"  accept="image/png">
+            </div>
+
+			  			    <div class="form-group">
+    				<label for="NewType">Тип </label>
+   						 <select  class="form-control" id="NewType" name="NewType">
+
+
+                           <option selected>Breakfast</option>
+                           <option>Lunch</option>
+                           <option>Dinner</option>
+
+
+    					 </select>
+  				</div>
+
+
+
+             <div class="form-group">
+    				<label for="newFoodType">Тип </label>
+   						 <select class="form-control" id="newFoodType" name="NewFoodType">
+
+
+                           <option selected>Meat</option>
+
+                           <option>Fish</option>
+
+                           <option>Drink</option>
+
+    					 </select>
+  				</div>
+
+
+
+                         <div class="form-group">
+    				<label for="newNation">Тип </label>
+   						 <select class="form-control" id="newNation" name="NewNation">
+
+
+                           <option selected>Italian</option>
+
+                           <option>Chinese</option>
+
+
+    					 </select>
+  				</div>
+
+
+            <div class="form-group">
+    				<label  for="newDescription">Описание</label>
+    				<input required class="form-control" id="newDescription" name="NewDescription" placeholder="введите описание">
+				</div>
+
+            <div class="form-group">
+    				<label  for="newCompostion">Состав</label>
+    				<input required class="form-control" id="newCompostion" name="NewCompostion" placeholder="введите состав">
+				</div>
+
+
+
+    			<div class="form-check">
+
+
+                    <input class="form-check-input" type="checkbox"  name="NewChief" id="newChief">
+
+    <label class="form-check-label" for="newChief">
+    От шэфа
+  </label>
+</div>
+
+
+                  			<div class="form-check">
+
+                    <input class="form-check-input" type="checkbox"  name="NewMain" id="newMain">
+    <label class="form-check-label" for="newMain">
+    На главной
+  </label>
+
+</div>
+
+
+
+<label for="Discount">Скидка до:</label>
+<input type="datetime-local" max='2023-01-01' id="Discount" name="NewDiscount">
+              <div class="form-group">
+    				<label for="NewDiscountPrice">Цена со скидкой</label>
+    				<input maxlength="8"   type="number" name="NewDiscountPrice" class="form-control" id="NewDiscountPrice">
+			  </div>
+
+
+
+			  <button type="submit"  name="newData" class="btn btn-primary"> добавить </button>
+
+		  </form>
+
+
+      </div>
+      <div class="modal-footer">
+
+        <button type="button" class="btn btn-primary" data-dismiss="modal"> Скрыть форму </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+    <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+    <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/holder.js') }}"></script>
+
+   <script>
+
+      function DeleteRequest(id)
+      {
+
+          const req = new XMLHttpRequest();
+          const url = 'http://localhost:8080/Admin/Delete/'+id
+          req.open("DELETE", url);
+          req.withCredentials = true;
+          req.send();
+          setTimeout(function(){
+		location.reload();
+	}, 700);
+      }
+
+            function LogOut()
+      {
+
+          const req = new XMLHttpRequest();
+          const url = 'http://localhost:8080/Login/LogOut'
+          req.open("GET", url);
+          req.withCredentials = true;
+          req.send();
+      }
+
+  </script>
+  </body>
+</html>
