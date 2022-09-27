@@ -7,7 +7,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <link rel="shortcut icon" href="themes/assets/ico/favicon.ico">
-    <title>Bootstrappage.com free templates</title>
+    <title>ShoppyShop</title>
 
 
     <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
@@ -111,7 +111,7 @@
 			<div id="googleMap" style="height:450px;"></div>
 			  <div class="container">
 				<div class="carousel-caption">
-				  <a class="btn btn-lg btn-default" href="/Cart" role="button" style="font-size:2em">Order Online Now &raquo;</a>
+				  <a class="btn btn-lg btn-default" href="/Cart" role="button" style="font-size:2em">Заказать сейчас &raquo;</a>
 				</div>
 			  </div>
 			</div>
@@ -137,7 +137,7 @@
        <div class="col-lg-4" >
           <img class="img-circle" src="{{ url_for('static', filename='images/'+dat.Picture) }}" alt="Generic placeholder image" width="200px" height="120px">
           <h2>{{dat.Name}}</h2>
-          <p>Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. </p>
+          <p>{{dat.Description}} </p>
            {%if dat.discount %}
           <p><a class="btn btn-default"  role="button" onclick="SendHttpRequest({{dat.Id}})">&pound;{{dat.Price}} Add to cart {{dat.discount.NewPrice}} &raquo;</a></p>
            {%else%}
@@ -149,7 +149,7 @@
         <div class="col-lg-4" >
           <img class="img-circle" src="{{ url_for('static', filename='images/'+dat.Picture) }}" alt="Generic placeholder image" width="200px" height="120px">
           <h2>{{dat.Name}}</h2>
-          <p>Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. </p>
+          <p>{{dat.Description}}  </p>
               {%if dat.discount %}
           <p>
 <a class="btn btn-default"  role="button" onclick="SendHttpRequest({{dat.Id}})"><strike>&pound;{{dat.Price}}</strike> Add to cart &pound;{{dat.discount.NewPrice}} &raquo;</a></p>
@@ -168,7 +168,7 @@
 		<div class="container" >
 		<div class="row">
 			<div class="col-lg-12">
-				<h1 class="cntr">We are launching complete online food order system for restaurent and takeaway Only at the rate <br>&pound;999 </h1>
+				<h1 class="cntr">Доставка начинается от  <br>&pound;500 </h1>
 			</div>
 		</div>
 		</div>
