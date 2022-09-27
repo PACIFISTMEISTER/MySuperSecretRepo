@@ -3,7 +3,7 @@ from sqlalchemy import Table, Column, MetaData, Integer, Numeric, create_engine,
 from sqlalchemy.orm import declarative_base, relationship, Session, sessionmaker
 import psycopg2
 
-engine = create_engine('postgresql+psycopg2://postgres:password@localhost/Shop')
+engine = create_engine('postgresql+psycopg2://postgres:royalflush228@localhost/Shop')
 Base = declarative_base()
 
 

@@ -91,7 +91,7 @@ class Admin_class(MethodView):
             NewDiscountPrice = request.form.get("NewPrice")
             timer = NewDiscount.rsplit("T", 1)
             DeleteDiscount = request.form.getlist("DeleteDiscount")
-            if DataValidate(name,price,Description,Composition,timer) is False:
+            if DataValidate(name,price,Description,Composition,timer) == False:
                 return redirect('/Admin',304)
             if NewDiscountPrice and timer and id:
                 UpdateDiscount(id, NewDiscountPrice, timer)

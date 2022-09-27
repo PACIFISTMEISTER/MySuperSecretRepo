@@ -96,7 +96,11 @@ def CheckComposition(Composition):
 
 def CheckTimer(timer):
     print('timer', timer)
-    mydate = datetime.strptime(timer[0], '%Y-%m-%d')
-    if mydate > (datetime.today() + timedelta(days=365)):
-        return False
+    if timer is not None:
+        try:
+            mydate = datetime.strptime(timer[0], '%Y-%m-%d')
+            if mydate > (datetime.today() + timedelta(days=365)):
+                return False
+        except:
+            return False
     return True
