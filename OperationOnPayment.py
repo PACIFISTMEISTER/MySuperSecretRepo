@@ -12,7 +12,7 @@ def SandMail(mail,Payment):
     """отправка письма"""
     msg = MIMEMultipart()
     text="Thank u for shopping on "+str(Payment)
-    password = "ipikoqhdurchgcaa"
+    password = "*"
     msg['From'] = "PacifistRaging@gmail.com"
     msg['To'] = mail
     msg['Subject'] = "Shopping"
