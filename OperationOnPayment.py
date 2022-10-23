@@ -13,7 +13,7 @@ def SandMail(mail,Payment):
     msg = MIMEMultipart()
     text="Thank u for shopping on "+str(Payment)
     password = "*"
-    msg['From'] = "PacifistRaging@gmail.com"
+    msg['From'] = "*"
     msg['To'] = mail
     msg['Subject'] = "Shopping"
     msg.attach(MIMEText(text, 'plain'))
